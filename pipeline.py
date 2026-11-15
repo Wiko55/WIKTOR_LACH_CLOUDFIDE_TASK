@@ -24,6 +24,8 @@ def clean_sales_data(raw_df: pd.DataFrame) -> pd.DataFrame:
     """Clean raw sales data and add a revenue column."""
     if not isinstance(raw_df, pd.DataFrame):
         raise TypeError("raw_df must be a pandas DataFrame.")
+    if raw_df.empty:
+        raise ValueError("raw_df must contain at least one sales row.")
 
     sales = raw_df.copy()
     sales.columns = (
@@ -65,6 +67,8 @@ def clean_sales_data(raw_df: pd.DataFrame) -> pd.DataFrame:
         .fillna(False)
     )
     sales = sales.loc[~total_rows].copy()
+    if sales.empty:
+        raise ValueError("No sales detail rows remain after removing summary rows.")
 
     # Standardize categories and reject rows that cannot be grouped meaningfully.
     for column in ["region", "product"]:

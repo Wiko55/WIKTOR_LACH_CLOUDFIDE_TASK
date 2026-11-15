@@ -43,14 +43,13 @@ By default, the pipeline reads and writes CSVs beside `pipeline.py`.
 **Part 1 — `add_virtual_column`**
 
 - **Safe Expression Evaluation via Reverse Polish Notation (RPN):** Seeing
-  multi-operator expressions like `quantity * unit_price - discount` immediately
-  reminded me of studying Reverse Polish Notation (Łukasiewicz notation) during
-  my mathematics degree. Implementing Dijkstra's Shunting-yard algorithm to
-  convert infix expressions into RPN was a deliberate engineering choice—it
-  guarantees proper operator precedence (`*` before `+` and `-`) and
-  left-associativity without relying on unsafe `eval()` or overly permissive
-  parsers, while preserving full control over strict syntax validation.
-- Labels must match `^[a-zA-Z_]+$`; referenced columns must exist and contain
+  multi-operator expressions like `quantity * unit_price - discount` reminded
+  me of studying "Polish notation"/"Łukaszsiewicz's annotation" during my mathematics
+  degree. I chose Dijkstra's Shunting-yard algorithm to convert infix
+  expressions into Reverse Polish Notation (RPN/postfix). It guarantees proper
+  precedence (`*` before `+` and `-`) and left-associativity without unsafe
+  `eval()` or overly permissive parsers, while preserving strict syntax control.
+- Labels must match `\A[a-zA-Z_]+\Z`; referenced columns must exist and contain
   numeric, non-boolean values.
 - Supports binary `+`, `-`, and `*` on existing columns only; no parentheses,
   unary operators, or numeric literals.
@@ -62,7 +61,8 @@ By default, the pipeline reads and writes CSVs beside `pipeline.py`.
 - Trim and capitalize categories, remove all quantity whitespace (including
   internal thousand separators) before parsing as `Int64`, and normalize
   decimal commas. Invalid non-empty values, missing quantities/categories, or
-  invalid dates raise errors instead of being silently dropped.
+  invalid dates raise errors instead of being silently dropped. Empty inputs
+  raise a clear `ValueError`.
 - Blank discounts become `0.0`. Missing prices use the product median only if
   observed prices are consistent; all eight products pass this check.
 - Retain negative and very large quantities: they may represent returns or bulk

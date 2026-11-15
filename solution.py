@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 # Pattern allowing only uppercase/lowercase letters and underscores (_)
-VALID_NAME_PATTERN = re.compile(r"^[a-zA-Z_]+$")
+VALID_NAME_PATTERN = re.compile(r"[a-zA-Z_]+")
 
 # Operator precedence: multiplication runs before addition and subtraction
 OPERATOR_PRIORITY = {
@@ -17,7 +17,7 @@ def _is_valid_column_name(name: object) -> bool:
     """Check whether a column label is a string containing only letters and underscores."""
     if not isinstance(name, str):
         return False
-    return bool(VALID_NAME_PATTERN.match(name))
+    return VALID_NAME_PATTERN.fullmatch(name) is not None
 
 
 def _split_expression(role: str) -> list[str] | None:

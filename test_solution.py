@@ -53,7 +53,7 @@ def test_input_dataframe_is_not_mutated():
 
 @pytest.mark.parametrize(
     "invalid_new_col",
-    ["col3", "new-col", "new col", "", "   ", "col!", 123, None],
+    ["col3", "new-col", "new col", "", "   ", "col!", "c\n", 123, None],
 )
 def test_invalid_new_column_name_returns_empty_df(invalid_new_col):
     df = pd.DataFrame({"a": [1, 2], "b": [3, 4]})
@@ -61,7 +61,10 @@ def test_invalid_new_column_name_returns_empty_df(invalid_new_col):
     assert result.empty
 
 
-@pytest.mark.parametrize("invalid_df_col", ["col 1", "col2", "col-a", "price$"])
+@pytest.mark.parametrize(
+    "invalid_df_col",
+    ["col 1", "col2", "col-a", "price$", "c\n"],
+)
 def test_invalid_existing_dataframe_column_returns_empty_df(invalid_df_col):
     df = pd.DataFrame({invalid_df_col: [1, 2], "valid_col": [3, 4]})
     result = add_virtual_column(df, "valid_col + valid_col", "result")

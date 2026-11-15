@@ -146,6 +146,19 @@ def test_clean_sales_data_rejects_non_dataframe_input():
         clean_sales_data([])
 
 
+def test_clean_sales_data_rejects_empty_dataframe():
+    with pytest.raises(ValueError, match="at least one sales row"):
+        clean_sales_data(pd.DataFrame(columns=SOURCE_COLUMNS))
+
+
+def test_clean_sales_data_rejects_input_with_no_detail_rows():
+    repeated_header = dict(zip(SOURCE_COLUMNS, SOURCE_COLUMNS))
+    total_row = _sales_row(order_id="TOTAL")
+
+    with pytest.raises(ValueError, match="No sales detail rows remain"):
+        clean_sales_data(_sales_frame(repeated_header, total_row))
+
+
 def test_clean_sales_data_rejects_missing_required_columns():
     raw_df = _sales_frame(_sales_row()).drop(columns=["Order Date"])
 
