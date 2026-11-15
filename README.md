@@ -44,7 +44,7 @@ By default, the pipeline reads and writes CSVs beside `pipeline.py`.
 
 - **Safe Expression Evaluation via Reverse Polish Notation (RPN):** Seeing
   multi-operator expressions like `quantity * unit_price - discount` reminded
-  me of studying "Polish notation"/"Łukaszsiewicz's annotation" during my mathematics
+  me of studying Polish (prefix, Łukasiewicz) notation during my mathematics
   degree. I chose Dijkstra's Shunting-yard algorithm to convert infix
   expressions into Reverse Polish Notation (RPN/postfix). It guarantees proper
   precedence (`*` before `+` and `-`) and left-associativity without unsafe
