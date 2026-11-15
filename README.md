@@ -59,7 +59,8 @@ By default, the pipeline reads and writes CSVs beside `pipeline.py`.
 
 - Headers are normalized; repeated headers, `TOTAL`, and exact duplicate rows
   (keeping the first) are removed.
-- Trim and capitalize categories, strip quantity whitespace, and normalize
+- Trim and capitalize categories, remove all quantity whitespace (including
+  internal thousand separators) before parsing as `Int64`, and normalize
   decimal commas. Invalid non-empty values, missing quantities/categories, or
   invalid dates raise errors instead of being silently dropped.
 - Blank discounts become `0.0`. Missing prices use the product median only if
@@ -82,6 +83,7 @@ categories can overlap.
 | Missing unit prices | 4 rows (2 Keyboard, 2 Printer paper) | Impute product median |
 | Blank discounts | 959 rows (3 also missing price) | Set to `0.0` |
 | Decimal-comma unit prices | 7 rows | Normalize and parse |
+| Internal whitespace in `Quantity ` | 4 rows: `1 371`, `1 427`, `1 745`, `1 762` | Remove `\s+` before parsing as `Int64` |
 | Negative quantities | 6 rows (`-2` to `-5`) | Retain; may be returns; confirm with sales |
 
 ### Additional Checks
